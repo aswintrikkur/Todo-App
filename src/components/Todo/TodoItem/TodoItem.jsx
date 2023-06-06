@@ -13,9 +13,6 @@ export const TodoItem = ({ todoContent, deleteCurrentItem, handleItemEdit, editS
         }
     }
     // console.log( `${index} = ${editSection}`)
-useEffect(()=>{
-console.log('render');
-},[editSection])
 
 
     return (

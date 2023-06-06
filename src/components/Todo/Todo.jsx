@@ -9,11 +9,11 @@ export const Todo = () => {
     const [editSection, setEditSection] = useState([]);
 
     useEffect(() => {
-        const newArray= Array(10).fill(false);
+        const newArray = Array(10).fill(false);
         setEditSection(newArray);
     }, [])
     // console.log(editSection);
-    
+
 
 
     const inputHandleOnChange = (event) => {
@@ -34,20 +34,33 @@ export const Todo = () => {
         })
         setTodoContent(filteredContent);
     }
+    // useEffect(()=>{
+
+    // },[editSection])
 
     // For todo-Item editing
     const handleItemEdit = (index) => {
 
-        //trail 1
+        // //trail 1
          setEditSection(prev => {
             prev.splice(index, 1, (prev[index] === false ? true : false))
             console.log('editSection', prev);
             return prev;
         });     
+        // setEditSection(prev=>prev.filter(data=>data));
 
-
-
+        //trail 2
+        // const updatedState= editSection.splice(index, 1, (editSection[index] === false ? true : false))
+        // console.log('editSection: ',editSection);
+        // console.log('updatedState: ',updatedState);
+        // setEditSection(prev=>prev);
+        // const filterData = editSection.map((data) => {
+        //     console.log(data);
+        //     return data
+        // })
+        // setEditSection(filterData);
     }
+    // console.log('editSection',editSection);
     // console.log('todoContent',todoContent);
 
     return (
