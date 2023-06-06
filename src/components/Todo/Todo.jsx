@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import './Todo.css'
 import { TodoItem } from './TodoItem/TodoItem'
 
+console.log('update on bose branch');
+
 export const Todo = () => {
     const [todoContent, setTodoContent] = useState([])
     // const [newindex,setIndex]=useState([]);      //to solve issue with same task name
