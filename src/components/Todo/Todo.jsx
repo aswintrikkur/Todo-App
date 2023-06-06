@@ -1,11 +1,19 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './Todo.css'
 import { TodoItem } from './TodoItem/TodoItem'
 
 export const Todo = () => {
     const [todoContent, setTodoContent] = useState([])
+    // const [newindex,setIndex]=useState([]);      //to solve issue with same task name
     const [tempContent, setTempContent] = useState("")
-    const [editSection, setEditSection] = useState([false]);
+    const [editSection, setEditSection] = useState([]);
+
+    useEffect(() => {
+        const newArray= Array(10).fill(false);
+        setEditSection(newArray);
+    }, [])
+    // console.log(editSection);
+    
 
 
     const inputHandleOnChange = (event) => {
@@ -19,8 +27,8 @@ export const Todo = () => {
     }
 
     // For todo-Item deleting
-    const deleteCurrentItem = (key) => {
-        todoContent.splice(key, 1);
+    const deleteCurrentItem = (index) => {
+        todoContent.splice(index, 1);
         const filteredContent = todoContent.filter((data) => {
             return data;
         })
@@ -30,13 +38,17 @@ export const Todo = () => {
     // For todo-Item editing
     const handleItemEdit = (index) => {
 
-        setEditSection(prev => {
+        //trail 1
+         setEditSection(prev => {
             prev.splice(index, 1, (prev[index] === false ? true : false))
+            console.log('editSection', prev);
             return prev;
-        });
+        });     
+
+
+
     }
-    console.log(editSection);
-    // console.log('render');
+    // console.log('todoContent',todoContent);
 
     return (
         <div>
@@ -52,6 +64,7 @@ export const Todo = () => {
 
                     {todoContent.map((data) => {
                         const index = todoContent.indexOf(data);
+
                         return <TodoItem todoContent={data}
                             deleteCurrentItem={() => { deleteCurrentItem(index) }}
                             handleItemEdit={() => { handleItemEdit(index) }}
@@ -62,7 +75,7 @@ export const Todo = () => {
                             <div className="edit-todo" /* children */>
                                 <input type="text" name="" id="edit-item" placeholder='Editing current todo item' />
                                 <button type='save' className='save'> save</button>
-                                <button type='reset' className='cancel' onClick={()=>{handleItemEdit(index)}}> cancel</button>
+                                <button type='reset' className='cancel' onClick={() => { handleItemEdit(index) }}> cancel</button>
                             </div>
                         </TodoItem>
                     })}
