@@ -46,5 +46,6 @@ color: #8FA8C1;
 }
 .todo-list{
     padding-top: 44px;
+    overflow: auto;
 
 }

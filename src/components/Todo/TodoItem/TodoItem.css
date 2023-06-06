@@ -6,7 +6,11 @@
     align-items: center;
     justify-content: space-between;
     /* border-top: 1px dashed rgba(143, 168, 193, 0.3);; */
-    border-bottom: 1px dashed rgba(143, 168, 193, 0.3);;
+    border-bottom: 1px dashed rgba(143, 168, 193, 0.3);
+}
+.todo-item .todo-label label{
+cursor: pointer;
+padding-left: 20px;
 }
 .todo-item .todo-buttons button {
 	background: none;
@@ -17,3 +21,4 @@
 	width: 23px;
 	height: 23px;
 }
+
