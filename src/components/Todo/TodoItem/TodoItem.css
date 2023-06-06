@@ -7,6 +7,7 @@
     justify-content: space-between;
     /* border-top: 1px dashed rgba(143, 168, 193, 0.3);; */
     border-bottom: 1px dashed rgba(143, 168, 193, 0.3);
+    position: relative;
 }
 .todo-item .todo-label label{
 cursor: pointer;
