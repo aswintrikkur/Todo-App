@@ -8,10 +8,10 @@ export const Todo = () => {
     const [tempContent, setTempContent] = useState("")
     const [editSection, setEditSection] = useState([]);
 
-    useEffect(() => {
-        const newArray = Array(10).fill(false);
-        setEditSection(newArray);
-    }, [])
+    // useEffect(() => {
+    //     const newArray = Array(10).fill(false);
+    //     setEditSection(newArray);
+    // }, [])
     // console.log(editSection);
 
 
@@ -24,43 +24,73 @@ export const Todo = () => {
     const handleInputOnAdd = () => {
         setTodoContent(prev => [...prev, tempContent])
         setTempContent("");
+        setEditSection([...editSection, false])
     }
 
     // For todo-Item deleting
     const deleteCurrentItem = (index) => {
-        todoContent.splice(index, 1);
-        const filteredContent = todoContent.filter((data) => {
-            return data;
-        })
-        setTodoContent(filteredContent);
-    }
-    // useEffect(()=>{
+        //trail 1        
+        /*  todoContent.splice(index, 1);
+            const filteredContent = todoContent.filter((data) => {
+                return data;
+            })
+            setTodoContent(filteredContent);    */
 
-    // },[editSection])
+        //trail 2
+        const newTodoContent = [...todoContent];
+        newTodoContent.splice(index, 1);
+        setTodoContent(newTodoContent);
+
+        editSection.splice(index, 1);
+        setEditSection([...editSection])
+    }
 
     // For todo-Item editing
     const handleItemEdit = (index) => {
 
-        // //trail 1
-         setEditSection(prev => {
-            prev.splice(index, 1, (prev[index] === false ? true : false))
-            console.log('editSection', prev);
+        // //trail 1 (failed)       
+        /*  setEditSection(prev => {
+            prev.splice(index, 1, (prev[index] =!prev[index]))
+            prev.splice(index, 1, (editSection[index] === false ? true : false)) //not working
+            // console.log('editSection', prev);
             return prev;
         });     
-        // setEditSection(prev=>prev.filter(data=>data));
+        // setEditSection(prev=>(prev.filter(data=>data)));  //not rendering without 2nd setEditSection()
+        */
 
-        //trail 2
-        // const updatedState= editSection.splice(index, 1, (editSection[index] === false ? true : false))
-        // console.log('editSection: ',editSection);
-        // console.log('updatedState: ',updatedState);
-        // setEditSection(prev=>prev);
-        // const filterData = editSection.map((data) => {
-        //     console.log(data);
-        //     return data
-        // })
-        // setEditSection(filterData);
+        //trail 2 (failed)
+        /* const updatedState= editSection.splice(index, 1, (editSection[index] === false ? true : false))
+        console.log('editSection: ',editSection);
+        console.log('updatedState: ',updatedState);
+        setEditSection(prev=>prev);
+        const filterData = editSection.map((data) => {
+            console.log(data);
+            return data
+        })
+        setEditSection(filterData);     */
+
+        //trail ChatGPT (success)
+        setEditSection(prev => {
+            const newEditSection = [...prev]; // Create a copy of the state array
+            newEditSection[index] = !newEditSection[index]    // Update the value at the given index
+            return newEditSection;
+        })
     }
-    // console.log('editSection',editSection);
+
+    //for saving edited value
+    const handleSaveValue = (index) => {
+        const updateTodoContent = [...todoContent];
+        updateTodoContent[index] = tempContent;
+        setTodoContent(updateTodoContent)
+
+        setEditSection(prev => {
+            const newEditSection = [...prev]; // Create a copy of the state array
+            newEditSection[index] = !newEditSection[index]    // Update the value at the given index
+            return newEditSection;
+        })
+    }
+
+    console.log('editSection', editSection);
     // console.log('todoContent',todoContent);
 
     return (
@@ -86,9 +116,14 @@ export const Todo = () => {
                             key={index} >
 
                             <div className="edit-todo" /* children */>
-                                <input type="text" name="" id="edit-item" placeholder='Editing current todo item' />
-                                <button type='save' className='save'> save</button>
-                                <button type='reset' className='cancel' onClick={() => { handleItemEdit(index) }}> cancel</button>
+                                <input type="text" name="" id="edit-item"
+                                    value={todoContent[index]}
+                                    onChange={inputHandleOnChange}
+                                    placeholder='Editing current todo item' />
+                                <button type='save' className='save'
+                                    onClick={() => { handleSaveValue(index) }}> save</button>
+                                <button type='reset' className='cancel'
+                                    onClick={() => { handleItemEdit(index) }}> cancel</button>
                             </div>
                         </TodoItem>
                     })}

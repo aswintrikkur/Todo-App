@@ -45,17 +45,19 @@
 	color: #8fa8c1;
 }
 .todo-list {
-	padding-top: 54px;
+	padding-top: 40px;
 	overflow: auto;
 }
 .edit-todo {
 	width: 500px;
-	height: 69px;
+	height: 68px;
 	background: #152431;
+
 	position: absolute;
 	left: 0;
 	display: flex;
 	justify-content: center;
+	align-items: center;
 	gap: 9px;
 }
 .edit-todo input {
