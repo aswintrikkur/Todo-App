@@ -111,6 +111,9 @@ export const Todo = () => {
 
     //for cancel handle
     const handleCancelButton = (index) => {
+        if(tempEdit[index]===""){
+            setTempEdit(todoContent);
+        }
         setEditSection(prev => {
             const newEditSection = [...prev]; // Create a copy of the state array
             newEditSection[index] = !newEditSection[index]    // Update the value at the given index
@@ -122,15 +125,16 @@ export const Todo = () => {
 
     //for saving edited value
     const handleSaveValue = (index) => {
+        if (tempEdit[index] === "") {
+            setError(prev => ({ ...prev, editTodo: true }));
+            return;
+        }
 
         const editedValue = [...todoContent];
         editedValue[index] = tempEdit[index];
         setTodoContent(editedValue);
 
-        if (tempEdit[index] === "") {
-            setError(prev => ({ ...prev, editTodo: true }));
-            return;
-        }
+
         setError(prev => ({ ...prev, editTodo: false }));
 
         setEditSection(prev => {
@@ -139,9 +143,9 @@ export const Todo = () => {
             return newEditSection;
         })
     }
-    console.log('error: ', error);
+    // console.log('error: ', error);
     // console.log('editSection', editSection);
-    // console.log('todoContent',todoContent);
+    console.log('todoContent',todoContent);
 
     return (
         <div>
