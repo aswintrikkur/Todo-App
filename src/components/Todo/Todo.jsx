@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import './Todo.css'
 import { TodoItem } from './TodoItem/TodoItem'
 
-console.log('update on bose branch');
+// console.log('update on bose branch');
+//trying to delete all branches
 
 export const Todo = () => {
     const [todoContent, setTodoContent] = useState([])
