@@ -10,6 +10,7 @@ export const Todo = () => {
     const [tempContent, setTempContent] = useState("")
     const [tempContent2, setTempContent2] = useState("")
     const [editSection, setEditSection] = useState([]);
+    const [tempEdit, setTempEdit] = useState([]);
     const [error, setError] = useState({
         addTodo: false,
         editTodo: false
@@ -39,7 +40,14 @@ export const Todo = () => {
         setTodoContent(prev => [...prev, tempContent])
         setTempContent("");
         setEditSection([...editSection, false])
+
     }
+
+    useEffect(() => {
+        setTempEdit(todoContent);
+    }, [todoContent])
+    console.log('tempEdit:', tempEdit);
+
 
     // For todo-Item deleting
     const deleteCurrentItem = (index) => {
@@ -62,14 +70,15 @@ export const Todo = () => {
     // For todo-Item editing - step1
     const inputHandleOnChange2 = (index, event) => {
         // setTempContent2(event.target.value);
-        console.log(index)
-        console.log(event.target.value);
+        // console.log(index)
 
-        const editedValue = [...todoContent];
+
+        const editedValue = [...tempEdit];
         editedValue[index] = event.target.value;
-        setTodoContent(editedValue);
+        setTempEdit(editedValue);
+
     }
-    // For todo-Item deleting - step2
+    // For todo-Item editing - step2
     const handleItemEdit = (index) => {
         //trail ChatGPT (success)
         setEditSection(prev => {
@@ -114,7 +123,11 @@ export const Todo = () => {
     //for saving edited value
     const handleSaveValue = (index) => {
 
-        if (todoContent[index] === "") {
+        const editedValue = [...todoContent];
+        editedValue[index] = tempEdit[index];
+        setTodoContent(editedValue);
+
+        if (tempEdit[index] === "") {
             setError(prev => ({ ...prev, editTodo: true }));
             return;
         }
@@ -126,7 +139,7 @@ export const Todo = () => {
             return newEditSection;
         })
     }
-
+    console.log('error: ', error);
     // console.log('editSection', editSection);
     // console.log('todoContent',todoContent);
 
@@ -155,7 +168,7 @@ export const Todo = () => {
 
                             <div className="edit-todo" /* children */>
                                 <input type="text" name="" id="edit-item"
-                                    value={todoContent[index]}
+                                    value={tempEdit[index]}
                                     onChange={(event) => { inputHandleOnChange2(index, event) }}
                                     placeholder='Editing current todo item'
                                 />
