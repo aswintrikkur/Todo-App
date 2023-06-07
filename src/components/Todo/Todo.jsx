@@ -2,14 +2,13 @@ import React, { useEffect, useState } from 'react'
 import './Todo.css'
 import { TodoItem } from './TodoItem/TodoItem'
 
-// console.log('update on bose branch');
-//trying to delete all branches
-//branches deleted succesfully
+
 
 export const Todo = () => {
     const [todoContent, setTodoContent] = useState([])
     // const [newindex,setIndex]=useState([]);      //to solve issue with same task name
     const [tempContent, setTempContent] = useState("")
+    const [tempContent2, setTempContent2] = useState("")
     const [editSection, setEditSection] = useState([]);
 
     // useEffect(() => {
@@ -23,6 +22,8 @@ export const Todo = () => {
     const inputHandleOnChange = (event) => {
         setTempContent(event.target.value);
     }
+
+
 
     // For todo-Item adding
     const handleInputOnAdd = () => {
@@ -49,8 +50,24 @@ export const Todo = () => {
         setEditSection([...editSection])
     }
 
-    // For todo-Item editing
+    // For todo-Item editing - step1
+    const inputHandleOnChange2 = (index,event) => {
+        // setTempContent2(event.target.value);
+        console.log(index)
+        console.log(event.target.value);
+
+        const editedValue = [...todoContent];
+        editedValue[index]=event.target.value;
+        setTodoContent(editedValue);
+    }
+    // For todo-Item deleting - step2
     const handleItemEdit = (index) => {
+        //trail ChatGPT (success)
+        setEditSection(prev => {
+            const newEditSection = [...prev]; // Create a copy of the state array
+            newEditSection[index] = !newEditSection[index]    // Update the value at the given index
+            return newEditSection;
+        })
 
         // //trail 1 (failed)       
         /*  setEditSection(prev => {
@@ -72,20 +89,10 @@ export const Todo = () => {
             return data
         })
         setEditSection(filterData);     */
-
-        //trail ChatGPT (success)
-        setEditSection(prev => {
-            const newEditSection = [...prev]; // Create a copy of the state array
-            newEditSection[index] = !newEditSection[index]    // Update the value at the given index
-            return newEditSection;
-        })
     }
 
     //for saving edited value
     const handleSaveValue = (index) => {
-        const updateTodoContent = [...todoContent];
-        updateTodoContent[index] = tempContent;
-        setTodoContent(updateTodoContent)
 
         setEditSection(prev => {
             const newEditSection = [...prev]; // Create a copy of the state array
@@ -94,7 +101,7 @@ export const Todo = () => {
         })
     }
 
-    console.log('editSection', editSection);
+    // console.log('editSection', editSection);
     // console.log('todoContent',todoContent);
 
     return (
@@ -122,8 +129,9 @@ export const Todo = () => {
                             <div className="edit-todo" /* children */>
                                 <input type="text" name="" id="edit-item"
                                     value={todoContent[index]}
-                                    onChange={inputHandleOnChange}
-                                    placeholder='Editing current todo item' />
+                                    onChange={(event)=>{inputHandleOnChange2(index,event)}}
+                                    placeholder='Editing current todo item'
+                                />
                                 <button type='save' className='save'
                                     onClick={() => { handleSaveValue(index) }}> save</button>
                                 <button type='reset' className='cancel'
