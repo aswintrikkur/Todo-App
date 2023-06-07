@@ -86,3 +86,14 @@ border: 1px solid rgba(255, 255, 255, 0.2)
 	color: #0C5488;
 
 }
+
+.error-message{
+	color: red;
+	font-size: 14px;
+	text-align: start;
+	padding-left: 20px;
+	position: absolute;
+}
+.error-message-edit{
+	bottom: 0;
+}

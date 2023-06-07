@@ -10,6 +10,10 @@ export const Todo = () => {
     const [tempContent, setTempContent] = useState("")
     const [tempContent2, setTempContent2] = useState("")
     const [editSection, setEditSection] = useState([]);
+    const [error, setError] = useState({
+        addTodo: false,
+        editTodo: false
+    })
 
     // useEffect(() => {
     //     const newArray = Array(10).fill(false);
@@ -27,6 +31,11 @@ export const Todo = () => {
 
     // For todo-Item adding
     const handleInputOnAdd = () => {
+        if (tempContent === "") {
+            setError(prev => ({ ...prev, addTodo: true }));
+            return
+        }
+        setError(prev => ({ ...prev, addTodo: false }));
         setTodoContent(prev => [...prev, tempContent])
         setTempContent("");
         setEditSection([...editSection, false])
@@ -51,13 +60,13 @@ export const Todo = () => {
     }
 
     // For todo-Item editing - step1
-    const inputHandleOnChange2 = (index,event) => {
+    const inputHandleOnChange2 = (index, event) => {
         // setTempContent2(event.target.value);
         console.log(index)
         console.log(event.target.value);
 
         const editedValue = [...todoContent];
-        editedValue[index]=event.target.value;
+        editedValue[index] = event.target.value;
         setTodoContent(editedValue);
     }
     // For todo-Item deleting - step2
@@ -91,8 +100,25 @@ export const Todo = () => {
         setEditSection(filterData);     */
     }
 
+    //for cancel handle
+    const handleCancelButton = (index) => {
+        setEditSection(prev => {
+            const newEditSection = [...prev]; // Create a copy of the state array
+            newEditSection[index] = !newEditSection[index]    // Update the value at the given index
+            return newEditSection;
+        })
+        setError(prev => ({ ...prev, editTodo: false }));
+
+    }
+
     //for saving edited value
     const handleSaveValue = (index) => {
+
+        if (todoContent[index] === "") {
+            setError(prev => ({ ...prev, editTodo: true }));
+            return;
+        }
+        setError(prev => ({ ...prev, editTodo: false }));
 
         setEditSection(prev => {
             const newEditSection = [...prev]; // Create a copy of the state array
@@ -110,8 +136,9 @@ export const Todo = () => {
                 <h2>Todo List</h2>
 
                 <div className="input-container">
-                    <input type="text" name="newTodo" value={tempContent} id="newTodo" placeholder='New Todo' onChange={inputHandleOnChange} />
+                    <input type="text" name="addTodo" value={tempContent} id="newTodo" placeholder='New Todo' onChange={inputHandleOnChange} />
                     <button type='submit' onClick={handleInputOnAdd} >ADD TODO</button>
+                    {error.addTodo && <p className="error-message"> please enter some content </p>}
 
                 </div>
                 <div className="todo-list" >
@@ -129,14 +156,15 @@ export const Todo = () => {
                             <div className="edit-todo" /* children */>
                                 <input type="text" name="" id="edit-item"
                                     value={todoContent[index]}
-                                    onChange={(event)=>{inputHandleOnChange2(index,event)}}
+                                    onChange={(event) => { inputHandleOnChange2(index, event) }}
                                     placeholder='Editing current todo item'
                                 />
                                 <button type='save' className='save'
                                     onClick={() => { handleSaveValue(index) }}> save</button>
                                 <button type='reset' className='cancel'
-                                    onClick={() => { handleItemEdit(index) }}> cancel</button>
+                                    onClick={() => { handleCancelButton(index) }}> cancel</button>
                             </div>
+                            {error.editTodo && <p className="error-message error-message-edit">  Please enter some content </p>}
                         </TodoItem>
                     })}
                 </div>

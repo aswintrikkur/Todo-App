@@ -27,6 +27,7 @@ export const TodoItem = ({ todoContent, deleteCurrentItem, handleItemEdit, editS
                     <button onClick={handleItemEdit}><img src='../src/Images/image 7.png' alt="edit" /></button>
                     <button onClick={deleteCurrentItem}><img src='../src/Images/image 9.png' alt="delete" /></button>
                 </div>
+                {/* {error&&children[1]} */}
             </div>
         </div>
     )
