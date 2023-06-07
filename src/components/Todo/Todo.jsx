@@ -4,6 +4,7 @@ import { TodoItem } from './TodoItem/TodoItem'
 
 // console.log('update on bose branch');
 //trying to delete all branches
+//branches deleted succesfully
 
 export const Todo = () => {
     const [todoContent, setTodoContent] = useState([])
